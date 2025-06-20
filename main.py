@@ -1,28 +1,20 @@
 import os
 import sys
-
 print("Working directory:", os.getcwd())
 print("Files in directory:", os.listdir())
-
 sys.path.append(os.getcwd())  # Добавляем текущую директорию в sys.path
-
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 from scraper import check_fines
 from scheduler import start_scheduler
-
 import json
-
 API_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
-
 TRACK_FILE = "tracked.json"
-
 @dp.message_handler(commands=["start"])
 async def start_cmd(message: types.Message):
     await message.answer("👋 Отправьте: /fines НОМЕР ТЕХПАСПОРТ [media:on]")
-
 @dp.message_handler(commands=["fines"])
 async def fines_cmd(message: types.Message):
     args = message.text.split()
@@ -37,7 +29,6 @@ async def fines_cmd(message: types.Message):
         return
     for fine in fines:
         await message.answer(fine)
-
 @dp.message_handler(commands=["track_add"])
 async def track_add(message: types.Message):
     args = message.text.split()
@@ -55,7 +46,6 @@ async def track_add(message: types.Message):
     with open(TRACK_FILE, "w") as f:
         json.dump(tracked, f)
     await message.answer(f"✅ `{car}` добавлено.", parse_mode="Markdown")
-
 if __name__ == "__main__":
     start_scheduler(bot)
     executor.start_polling(dp, skip_updates=True)
