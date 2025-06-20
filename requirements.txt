@@ -4,3 +4,4 @@ apscheduler
 selenium
 webdriver-manager
 tzdata
+pytz
