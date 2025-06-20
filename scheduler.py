@@ -1,10 +1,10 @@
-
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from scraper import check_fines
 import json
+from pytz import timezone  # импорт перенесён вверх
 
 def start_scheduler(bot):
-    scheduler = AsyncIOScheduler(timezone="Europe/Tbilisi")
+    scheduler = AsyncIOScheduler(timezone=timezone("Europe/Tbilisi"))
 
     @scheduler.scheduled_job("cron", hour=10, minute=0)
     async def daily_check():
@@ -13,6 +13,7 @@ def start_scheduler(bot):
                 tracked = json.load(f)
         except:
             tracked = {}
+
         for car, info in tracked.items():
             passport = info["passport"]
             user_id = info["user_id"]
