@@ -1,14 +1,22 @@
+import os
+import sys
 
-import logging
+print("Working directory:", os.getcwd())
+print("Files in directory:", os.listdir())
+
+sys.path.append(os.getcwd())  # Добавляем текущую директорию в sys.path
+
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 from scraper import check_fines
 from scheduler import start_scheduler
-import os, json
+
+import json
 
 API_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
+
 TRACK_FILE = "tracked.json"
 
 @dp.message_handler(commands=["start"])
@@ -26,6 +34,7 @@ async def fines_cmd(message: types.Message):
     fines = check_fines(car_num, tech_pass, include_media)
     if not fines:
         await message.answer("✅ Штрафов не найдено.")
+        return
     for fine in fines:
         await message.answer(fine)
 
@@ -48,6 +57,5 @@ async def track_add(message: types.Message):
     await message.answer(f"✅ `{car}` добавлено.", parse_mode="Markdown")
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
     start_scheduler(bot)
     executor.start_polling(dp, skip_updates=True)
