@@ -1,0 +1,4 @@
+aiogram
+apscheduler
+selenium
+webdriver-manager
