@@ -3,5 +3,3 @@ aiohttp==3.8.4
 apscheduler
 selenium
 webdriver-manager
-tzdata
-pytz
