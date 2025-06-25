@@ -1,4 +1,4 @@
-import asyncio
+import os
 from aiogram import Bot, Dispatcher
 from aiogram.utils import executor
 from scraper import check_fines
@@ -47,9 +47,13 @@ async def track_add(message):
 
 
 async def main():
+    # Создаем планировщик
     scheduler = create_scheduler(bot)
+    # Запускаем его внутри активного цикла
     scheduler.start()
+    # Запускаем бота
     await executor.start(dp, skip_updates=True)
 
 if __name__ == "__main__":
+    import asyncio
     asyncio.run(main())
