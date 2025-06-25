@@ -35,5 +35,6 @@ def check_fines(car_number, tech_passport, include_media=False):
             text += f"\n📷 Фото: {photo_btn[0].text if photo_btn else '—'}"
             text += f"\n🎥 Видео: {'Есть' if video_btn else 'Нет'}"
         results.append(text)
-    driver.quit()
+    driver.quit() 
+    return results
     return results
