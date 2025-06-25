@@ -1,8 +1,8 @@
-import os
+import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.utils import executor
 from scraper import check_fines
-from scheduler import start_scheduler
+from scheduler import create_scheduler
 
 API_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 bot = Bot(token=API_TOKEN)
@@ -46,9 +46,10 @@ async def track_add(message):
     await message.answer(f"✅ `{car}` добавлено.", parse_mode="Markdown")
 
 
-def main():
-    start_scheduler(bot)
-    executor.start_polling(dp, skip_updates=True)
+async def main():
+    scheduler = create_scheduler(bot)
+    scheduler.start()
+    await executor.start(dp, skip_updates=True)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
