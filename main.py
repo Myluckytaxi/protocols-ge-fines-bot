@@ -4,7 +4,6 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 from scraper import check_fines
 from scheduler import start_scheduler
-import json
 
 API_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 bot = Bot(token=API_TOKEN)
@@ -53,8 +52,19 @@ async def main():
     # Запускаем планировщик
     await start_scheduler(bot)
     # Запускаем бота
-    await executor.start_polling(dp, skip_updates=True)
+    await executor.start(dp)
 
+# Вместо asyncio.run() вызываем main() напрямую, если среда уже запустила цикл
 if __name__ == "__main__":
-    asyncio.run(main())
-
+    # Проверяем, есть ли уже запущенный цикл
+    try:
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            # Если цикл уже запущен, запускаем main() как задачу
+            loop.create_task(main())
+        else:
+            # Если цикл не запущен, запускаем его
+            asyncio.run(main())
+    except RuntimeError:
+        # В случае ошибок, запускаем через asyncio.run()
+        asyncio.run(main())
