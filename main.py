@@ -46,14 +46,8 @@ async def track_add(message):
     await message.answer(f"✅ `{car}` добавлено.", parse_mode="Markdown")
 
 
-async def main():
-    # Создаем планировщик
-    scheduler = create_scheduler(bot)
-    # Запускаем его внутри активного цикла
-    scheduler.start()
-    # Запускаем бота
-    await executor.start(dp, skip_updates=True)
-
+# Запуск бота и планировщика
 if __name__ == "__main__":
-    import asyncio
-    asyncio.run(main())
+    scheduler = create_scheduler(bot)
+    scheduler.start()
+    executor.start_polling(dp, skip_updates=True)
