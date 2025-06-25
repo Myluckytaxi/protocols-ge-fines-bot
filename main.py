@@ -1,4 +1,5 @@
 import os
+import asyncio
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 from scraper import check_fines
@@ -48,8 +49,12 @@ async def track_add(message: types.Message):
         json.dump(tracked, f)
     await message.answer(f"✅ `{car}` добавлено.", parse_mode="Markdown")
 
-if __name__ == "__main__":
-    start_scheduler(bot)
-    executor.start_polling(dp, skip_updates=True)
+async def main():
+    # Запускаем планировщик
+    await start_scheduler(bot)
+    # Запускаем бота
+    await executor.start_polling(dp, skip_updates=True)
 
+if __name__ == "__main__":
+    asyncio.run(main())
 
