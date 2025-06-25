@@ -50,17 +50,7 @@ async def main():
     # Запускаем планировщик
     await start_scheduler(bot)
     # Запускаем бота
-    await executor.start(dp)
+    await executor.start_polling(dp, skip_updates=True)
 
 if __name__ == "__main__":
-    try:
-        loop = asyncio.get_event_loop()
-        if loop.is_running():
-            # Если цикл уже запущен, создаем задачу
-            loop.create_task(main())
-        else:
-            # Если цикл не запущен, запускаем через asyncio.run()
-            asyncio.run(main())
-    except RuntimeError:
-        # В случае ошибок — запускаем через asyncio.run()
-        asyncio.run(main())
+    asyncio.run(main())
