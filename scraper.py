@@ -37,4 +37,3 @@ def check_fines(car_number, tech_passport, include_media=False):
         results.append(text)
     driver.quit() 
     return results
-    return results
