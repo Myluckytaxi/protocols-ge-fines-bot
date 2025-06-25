@@ -1,9 +1,8 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from scraper import check_fines
 import json
-import asyncio
 
-def start_scheduler(bot):
+def create_scheduler(bot):
     scheduler = AsyncIOScheduler()
 
     @scheduler.scheduled_job("cron", hour=10, minute=0)
@@ -21,8 +20,8 @@ def start_scheduler(bot):
             if fines:
                 text = f"🚨 Новые штрафы по `{car}`:\n\n" + "\n\n".join(fines)
                 try:
-                    asyncio.create_task(bot.send_message(chat_id=user_id, text=text, parse_mode="Markdown"))
+                    await bot.send_message(chat_id=user_id, text=text, parse_mode="Markdown")
                 except Exception as e:
                     print("Ошибка при отправке:", e)
 
-    scheduler.start()
+    return scheduler
