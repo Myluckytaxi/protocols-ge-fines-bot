@@ -4,4 +4,3 @@ apscheduler
 selenium
 webdriver-manager
 pytz
-
