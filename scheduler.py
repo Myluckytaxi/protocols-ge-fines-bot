@@ -1,11 +1,9 @@
-
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from scraper import check_fines
 import json
-from pytz import timezone
 
 def start_scheduler(bot):
-    scheduler = AsyncIOScheduler(timezone=timezone("Europe/Tbilisi"))
+    scheduler = AsyncIOScheduler()
 
     @scheduler.scheduled_job("cron", hour=10, minute=0)
     async def daily_check():
@@ -27,4 +25,3 @@ def start_scheduler(bot):
                     print("❌ Ошибка при отправке:", e)
 
     scheduler.start()
-
