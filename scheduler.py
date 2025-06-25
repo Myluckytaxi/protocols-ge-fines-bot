@@ -1,8 +1,9 @@
+import asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from scraper import check_fines
 import json
 
-def start_scheduler(bot):
+async def start_scheduler(bot):
     scheduler = AsyncIOScheduler()
 
     @scheduler.scheduled_job("cron", hour=10, minute=0)
@@ -25,3 +26,11 @@ def start_scheduler(bot):
                     print("❌ Ошибка при отправке:", e)
 
     scheduler.start()
+
+async def main():
+    # Передайте сюда вашего бота
+    bot = ...  # Инициализация вашего бота
+    await start_scheduler(bot)
+
+if __name__ == "__main__":
+    asyncio.run(main())
