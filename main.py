@@ -52,3 +52,4 @@ if __name__ == "__main__":
     start_scheduler(bot)
     executor.start_polling(dp, skip_updates=True)
 
+
